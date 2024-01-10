@@ -25,6 +25,9 @@ const FixedLink = styled(StyledLink)`
 export default function Home() {
   const { data } = useSWR("/api/places", { fallbackData: [] });
 
+ 
+  
+
   return (
     <>
       <List role="list">
