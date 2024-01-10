@@ -15,6 +15,11 @@ export default async function handler(request, response) {
     const place = await Place.findById(id);
     return response.status(200).json(place);
   }
+  if (request.method === "DELETE") {
+    await Product.findByIdAndDelete(id);
+
+    response.status(200).json({ message: "Success!" });
+  }
 
   // const place = place.find((place) => place._id.$oid === id);
   // const comment = place?.comments;

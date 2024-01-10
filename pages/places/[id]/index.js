@@ -34,12 +34,20 @@ export default function DetailsPage() {
   const { isReady } = router;
   const { id } = router.query;
   const { data, isLoading, error } = useSWR(`/api/places/${id}`);
+  if (!data) {
+    return;
+  }
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
   console.log("dataaaaaa", data);
-  console.log(data.image);
 
-  function deletePlace() {
-    console.log("deleted?");
+  async function deletePlace(id) {
+    const response = await fetch(`/api/places/${id}`, { method: "DELETE" });
+
+    if (!response.ok) {
+      return;
+    }
+
+    router.push("/");
   }
 
   return (
@@ -69,7 +77,11 @@ export default function DetailsPage() {
         <Link href={`/places/${id}/edit`} passHref legacyBehavior>
           <StyledLink>Edit</StyledLink>
         </Link>
-        <StyledButton onClick={deletePlace} type="button" variant="delete">
+        <StyledButton
+          onClick={() => deletePlace(id)}
+          type="button"
+          variant="delete"
+        >
           Delete
         </StyledButton>
       </ButtonContainer>
