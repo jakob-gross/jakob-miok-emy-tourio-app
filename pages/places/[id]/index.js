@@ -34,8 +34,9 @@ export default function DetailsPage() {
   const { isReady } = router;
   const { id } = router.query;
   const { data, isLoading, error } = useSWR(`/api/places/${id}`);
-  console.log("dataaaaaa", data);
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
+  console.log("dataaaaaa", data);
+  console.log(data.image);
 
   function deletePlace() {
     console.log("deleted?");
