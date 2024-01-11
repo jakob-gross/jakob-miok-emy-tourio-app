@@ -11,7 +11,29 @@ export default function EditPage() {
   const { data: place, isLoading, error } = useSWR(`/api/places/${id}`);
 
   async function editPlace(place) {
-    console.log("Place edited (but not really...)");
+    // console.log("Place edited (but not really...)");
+
+    place.preventDefault();
+
+    const formData = new FormData(place.target);
+    const placeData = Object.fromEntries(formData);
+    console.log("place data", placeData);
+
+    const response = await fetch(`/api/places/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(placeData),
+    });
+
+    // mutate();
+    // place.target.reset();
+
+    if (!response.ok) {
+      console.error(response.status);
+      return;
+    }
   }
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;
@@ -22,7 +44,7 @@ export default function EditPage() {
       <Link href={`/places/${id}`} passHref legacyBehavior>
         <StyledLink justifySelf="start">back</StyledLink>
       </Link>
-      <Form onSubmit={editPlace} formName={'edit-place'} defaultData={place} />
+      <Form onSubmit={editPlace} formName={"edit-place"} defaultData={place} />
     </>
   );
 }

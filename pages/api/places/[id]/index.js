@@ -16,7 +16,16 @@ export default async function handler(request, response) {
     return response.status(200).json(place);
   }
   if (request.method === "DELETE") {
-    const something = await Place.findByIdAndDelete(id);
+    await Place.findByIdAndDelete(id);
+
+    response.status(200).json({ message: "Success!" });
+  }
+
+  if (request.method === "PATCH") {
+    console.log("id testing", id);
+    const updatedData = request.body;
+    console.log("updatedData", updatedData);
+    const something = await Place.findByIdAndUpdate(id, updatedData);
 
     response.status(200).json({ message: "Success!" });
   }
