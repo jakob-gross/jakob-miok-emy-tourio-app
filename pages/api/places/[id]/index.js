@@ -16,7 +16,7 @@ export default async function handler(request, response) {
     return response.status(200).json(place);
   }
   if (request.method === "DELETE") {
-    await Product.findByIdAndDelete(id);
+    const something = await Place.findByIdAndDelete(id);
 
     response.status(200).json({ message: "Success!" });
   }
