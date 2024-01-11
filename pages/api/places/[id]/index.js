@@ -21,15 +21,14 @@ export default async function handler(request, response) {
     response.status(200).json({ message: "Success!" });
   }
 
-
   if (request.method === "PATCH") {
-    const something = await Place.findByIdAndUpdate(id);
-console.log("somthing", something)
+    console.log("id testing", id);
+    const updatedData = request.body;
+    console.log("updatedData", updatedData);
+    const something = await Place.findByIdAndUpdate(id, updatedData);
+
     response.status(200).json({ message: "Success!" });
   }
-
-
-
 
   // const place = place.find((place) => place._id.$oid === id);
   // const comment = place?.comments;
