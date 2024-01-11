@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import Form from "../components/Form.js";
 import { StyledLink } from "../components/StyledLink.js";
+import useSWR from "swr";
 
 const StyledBackLink = styled(StyledLink)`
   justify-self: flex-start;
@@ -10,9 +11,34 @@ const StyledBackLink = styled(StyledLink)`
 
 export default function CreatePlacePage() {
   const router = useRouter();
+  const { mutate } = useSWR("/api/places");
 
-  function addPlace(place) {
-    console.log("Place added (but not really...)");
+  async function addPlace(place) {
+    // event.preventDefault();
+    // const formData = new FormData(event.target);
+    // const data = Object.fromEntries(formData);
+    // onSubmit(data);
+
+    console.log(place);
+
+    const formData = new FormData(place.target);
+    const placeData = Object.fromEntries(formData);
+
+    const response = await fetch("/api/places", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(placeData),
+    });
+
+    if (!response.ok) {
+      console.error(response.status);
+      return;
+    }
+
+    mutate();
+    // event.target.reset();
   }
 
   return (
