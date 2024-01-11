@@ -11,15 +11,9 @@ const StyledBackLink = styled(StyledLink)`
 
 export default function CreatePlacePage() {
   const router = useRouter();
-  const { mutate } = useSWR("/api/places");
 
   async function addPlace(place) {
-    // event.preventDefault();
-    // const formData = new FormData(event.target);
-    // const data = Object.fromEntries(formData);
-    // onSubmit(data);
-
-    console.log(place);
+    place.preventDefault();
 
     const formData = new FormData(place.target);
     const placeData = Object.fromEntries(formData);
@@ -32,13 +26,12 @@ export default function CreatePlacePage() {
       body: JSON.stringify(placeData),
     });
 
+    router.push("/");
+
     if (!response.ok) {
       console.error(response.status);
       return;
     }
-
-    mutate();
-    // event.target.reset();
   }
 
   return (
