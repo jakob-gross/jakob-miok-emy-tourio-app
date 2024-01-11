@@ -12,6 +12,31 @@ export default function EditPage() {
 
   async function editPlace(place) {
     console.log("Place edited (but not really...)");
+
+    place.preventDefault();
+
+    const formData = new FormData(place.target);
+    const placeData = Object.fromEntries(formData);
+// console.log("place data", placeData)
+
+    const response = await fetch("/api/places", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(placeData),
+    });
+
+    mutate();
+    place.target.reset();
+
+
+    if (!response.ok) {
+      console.error(response.status);
+      return;
+    }
+
+    
   }
 
   if (!isReady || isLoading || error) return <h2>Loading...</h2>;

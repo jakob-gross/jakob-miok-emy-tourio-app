@@ -16,10 +16,20 @@ export default async function handler(request, response) {
     return response.status(200).json(place);
   }
   if (request.method === "DELETE") {
-    const something = await Place.findByIdAndDelete(id);
+    await Place.findByIdAndDelete(id);
 
     response.status(200).json({ message: "Success!" });
   }
+
+
+  if (request.method === "PATCH") {
+    const something = await Place.findByIdAndUpdate(id);
+console.log("somthing", something)
+    response.status(200).json({ message: "Success!" });
+  }
+
+
+
 
   // const place = place.find((place) => place._id.$oid === id);
   // const comment = place?.comments;
