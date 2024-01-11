@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+import "./Comments";
 
 const placeSchema = new Schema({
   name: { type: String, required: true },

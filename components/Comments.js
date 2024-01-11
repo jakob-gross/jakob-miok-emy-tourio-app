@@ -1,6 +1,8 @@
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import { FormContainer, Input, Label } from "./Form";
 import { StyledButton } from "./StyledButton.js";
+import { Fragment } from "react";
 
 export default function Comments({ locationName, comments }) {
   const Article = styled.article`
@@ -17,8 +19,31 @@ export default function Comments({ locationName, comments }) {
     }
   `;
 
-  function handleSubmitComment(e) {
+  const router = useRouter();
+  const { id } = router.query;
+
+  console.log("place id", id);
+
+  async function handleSubmitComment(e) {
     e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const commentData = Object.fromEntries(formData);
+
+    console.log("commentData", commentData);
+
+    const response = await fetch(`/api/places/comments/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(commentData),
+    });
+
+    if (!response.ok) {
+      console.error(response.status);
+      return;
+    }
   }
 
   return (
@@ -35,14 +60,14 @@ export default function Comments({ locationName, comments }) {
           <h1> {comments.length} fans commented on this place:</h1>
           {comments.map(({ name, comment }, idx) => {
             return (
-              <>
-                <p key={idx}>
+              <Fragment key={idx}>
+                <p>
                   <small>
                     <strong>{name}</strong> commented on {locationName}
                   </small>
                 </p>
                 <span>{comment}</span>
-              </>
+              </Fragment>
             );
           })}
         </>
