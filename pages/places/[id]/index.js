@@ -41,12 +41,11 @@ export default function DetailsPage() {
 
   async function deletePlace(id) {
     const response = await fetch(`/api/places/${id}`, { method: "DELETE" });
+    router.push("/");
 
     if (!response.ok) {
       return;
     }
-
-    router.push("/");
   }
 
   return (
