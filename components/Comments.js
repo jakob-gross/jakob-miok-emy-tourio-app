@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { FormContainer, Input, Label } from "./Form";
 import { StyledButton } from "./StyledButton.js";
 import { Fragment } from "react";
-
+import useSWR from "swr";
 export default function Comments({ locationName, comments }) {
   const Article = styled.article`
     display: flex;
@@ -23,6 +23,7 @@ export default function Comments({ locationName, comments }) {
   const { id } = router.query;
 
   console.log("place id", id);
+  const { mutate } = useSWR(`/api/places/${id}`);
 
   async function handleSubmitComment(e) {
     e.preventDefault();
@@ -44,6 +45,7 @@ export default function Comments({ locationName, comments }) {
       console.error(response.status);
       return;
     }
+    mutate();
   }
 
   return (
